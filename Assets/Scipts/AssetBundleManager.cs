@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using System.Collections;
 using System.Collections.Generic;
 using System;
@@ -10,10 +12,11 @@ using System;
  
 //TODO: 일괄 패치나 패치 진행도라던지 이런거
 //플랫폼에 따른 처리
+//여러가지 에셋번들을 만들어 테스트해보기 (패치 진행UI 만들어서)
 
 public class AssetBundleManager : MonoBehaviour
 {
-    public bool _simulateMode = true;
+    public bool _simulateMode = false;
 
     private const string _defaultAssetBundlePath = "file://C:/Users/AidenYang/Documents/AssetBundleProj/Assets/AssetBundles/";
 
