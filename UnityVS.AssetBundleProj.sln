@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnityVS.AssetBundleProj.CSharp", "UnityVS.AssetBundleProj.CSharp.csproj", "{ECFDBE54-08A8-2116-503B-19B2A094FCAF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnityVS.AssetBundleProj.CSharp.Editor", "UnityVS.AssetBundleProj.CSharp.Editor.csproj", "{CF3238B1-64B9-39E8-9092-28F7B1A7015D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ECFDBE54-08A8-2116-503B-19B2A094FCAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECFDBE54-08A8-2116-503B-19B2A094FCAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECFDBE54-08A8-2116-503B-19B2A094FCAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECFDBE54-08A8-2116-503B-19B2A094FCAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF3238B1-64B9-39E8-9092-28F7B1A7015D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF3238B1-64B9-39E8-9092-28F7B1A7015D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF3238B1-64B9-39E8-9092-28F7B1A7015D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF3238B1-64B9-39E8-9092-28F7B1A7015D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
