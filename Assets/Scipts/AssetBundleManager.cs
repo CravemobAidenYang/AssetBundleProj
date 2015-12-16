@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 using System;
@@ -8,14 +9,13 @@ using System;
 //콜백함수로 처리하는 싱글톤 클래스
  
 //TODO: 일괄 패치나 패치 진행도라던지 이런거
+//플랫폼에 따른 처리
 
 public class AssetBundleManager : MonoBehaviour
 {
-#if UNITY_EDITOR
+    public bool _simulateMode = true;
+
     private const string _defaultAssetBundlePath = "file://C:/Users/AidenYang/Documents/AssetBundleProj/Assets/AssetBundles/";
-#else
-    private const string _defaultAssetBundlePath = "file://C:/Users/AidenYang/Documents/AssetBundleProj/Assets/AssetBundles/";
-#endif
 
     private AssetBundleManifest _assetBundleManifest;
 
@@ -90,6 +90,8 @@ public class AssetBundleManager : MonoBehaviour
 
     private void Init()
     {
+        Debug.Log("에셋번들 시뮬레이트 모드 " + (_simulateMode ? "On" : "Off"));
+
         _assetBundleManifest = null;
         isPatching = false;
         StartCoroutine(LoadManifest());
@@ -209,8 +211,36 @@ public class AssetBundleManager : MonoBehaviour
     }
 
     //개선필요: 같은 번들에대해 동시에 www로 다운로드 하면 어떤일이 생길까
+    //만약 로컬에서 번들을 불러오고 그안에서 에셋을 꺼낸뒤 사용하고 다시 번들을 언로드하는 과정이
+    //매번 반복하기에 비용이 많이 나가는 작업이라면 번들을 한번 로드한뒤 캐시해둘 필요가 있겠다.
     private IEnumerator LoadAssetAsyncInternal<T>(string bundleName, string assetName, bool isSceneAsset, Action<AssetBundle, T> callback) where T : UnityEngine.Object
     {
+#if UNITY_EDITOR
+        if (_simulateMode)
+        {
+            string assetNameWithoutExpend = assetName.Split('.')[0];
+            var paths = AssetDatabase.GetAssetPathsFromAssetBundleAndAssetName(bundleName, assetNameWithoutExpend);
+
+            foreach(var path in paths)
+            {
+                if(path.ToLower().Contains(assetName.ToLower()))
+                {
+                    if (isSceneAsset)
+                    {
+                        EditorApplication.LoadLevelInPlayMode(path);
+                    }
+                    else
+                    {
+                        T obj = AssetDatabase.LoadAssetAtPath<T>(path);
+                        callback(null, obj);
+                    }
+                    yield break;
+                }
+            }
+
+            Debug.LogError(string.Format("에셋번들 시뮬레이션 모드에서 에셋을 찾지 못함. bundleName:{0}, assetName:{1}", bundleName, assetName));
+        }
+#endif
         string fullPath = GetFullPathFromBundleName(bundleName);
 
         yield return StartCoroutine(WaitForLoadManifest());
