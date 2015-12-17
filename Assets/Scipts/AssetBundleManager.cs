@@ -263,6 +263,7 @@ public class AssetBundleManager : MonoBehaviour
         UnloadAssetBundle(bundleName);
     }
 
+#if UNITY_EDITOR
     private void LoadAssetInSimulateMode<T>(string bundleName, string assetName, bool isSceneAsset, Action<AssetBundle, T> callback) where T : UnityEngine.Object
     {
         string assetNameWithoutExpend = assetName.Split('.')[0];
@@ -288,6 +289,7 @@ public class AssetBundleManager : MonoBehaviour
 
         Debug.LogError(string.Format("에셋번들 시뮬레이션 모드에서 에셋을 찾지 못함. bundleName:{0}, assetName:{1}", bundleName, assetName));
     }
+#endif
 
     private IEnumerator LoadAssetBundleAsync(string bundleName)
     {
