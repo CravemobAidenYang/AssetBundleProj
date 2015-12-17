@@ -47,6 +47,14 @@ public class AssetBundleManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        if(_instance != this)
+        {
+            Destroy(gameObject);
+        }
+    }
+
     public delegate void OnPatchDoneDelegate();
 
     public bool isPatching
@@ -141,12 +149,12 @@ public class AssetBundleManager : MonoBehaviour
     }
 
     //모든 에셋번들에 대해 변경사항이 있을시 다운로드 받는다.
-    public void PatchAllAssetBundles()
+    public void PatchAllAssetBundlesAsync()
     {
-        StartCoroutine(PatchAllAssetBundlesInternal());
+        StartCoroutine(PatchAllAssetBundlesAsyncInternal());
     }
 
-    private IEnumerator PatchAllAssetBundlesInternal()
+    private IEnumerator PatchAllAssetBundlesAsyncInternal()
     {
         isPatching = true;
 
@@ -192,13 +200,13 @@ public class AssetBundleManager : MonoBehaviour
     }
 
     //해시값에 해당하는 번들이 캐시되어 있으면 건너뛰고 아니면 다운로드하여 캐시해둔다.
-    public IEnumerator DownloadAssetBundle(string bundleName, Hash128 bundleHash)
+    private IEnumerator DownloadAssetBundle(string bundleName, Hash128 bundleHash)
     {
         _currentPatchProgress = 0f;
 
-        string fullPath = GetFullPathFromBundleName(bundleName);
-
         yield return StartCoroutine(WaitForLoadManifest());
+
+        string fullPath = GetFullPathFromBundleName(bundleName);
 
         using (WWW www = WWW.LoadFromCacheOrDownload(fullPath, bundleHash))
         {
@@ -348,7 +356,7 @@ public class AssetBundleManager : MonoBehaviour
             _loadedBundleDict.Remove(bundleName);
         }
 
-        //의존관계에 있는 에섯번들을 언로드한다.
+        //의존관계에 있는 에셋번들을 언로드한다.
         string[] dependencies = _assetBundleManifest.GetAllDependencies(bundleName);
         for (int i = 0; i < dependencies.Length; ++i)
         {

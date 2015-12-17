@@ -14,7 +14,7 @@ public class Patcher : MonoBehaviour
             Debug.Log("패치 끝");
             AssetBundleManager.instance.LoadSceneAsync("test.unity3d", "test");
         });
-        AssetBundleManager.instance.PatchAllAssetBundles();
+        AssetBundleManager.instance.PatchAllAssetBundlesAsync();
 
         StartCoroutine(CheckProgress());
 	}
