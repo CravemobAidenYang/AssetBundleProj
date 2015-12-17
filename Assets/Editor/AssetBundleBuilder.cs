@@ -11,10 +11,15 @@ public class AssetBundleBuilder
     {
         string path = "Assets/AssetBundles/";
 
-        Debug.Log("에디터용 빌드 중");
-        BuildPlatform(path, BuildTarget.StandaloneWindows64);
-    }
+        Debug.Log("에디터용 에셋번들 빌드 중");
+        BuildPlatform(path + "editor/", BuildTarget.StandaloneWindows64);
+        Debug.Log("에디터용 에셋번들 빌드 완료");
 
+        Debug.Log("안드로이드 에셋번들 빌드 중");
+        BuildPlatform(path + "android/", BuildTarget.Android);
+        Debug.Log("안드로이드 에셋번들 빌드 완료");
+    }
+    
     static void BuildPlatform(string path, BuildTarget target)
     {
         if (!Directory.Exists(path))
@@ -22,6 +27,6 @@ public class AssetBundleBuilder
             Directory.CreateDirectory(path);
         }
 
-        BuildPipeline.BuildAssetBundles(path, BuildAssetBundleOptions.None, target);
+        BuildPipeline.BuildAssetBundles(path, BuildAssetBundleOptions.DeterministicAssetBundle, target);
     }
 }
